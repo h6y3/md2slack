@@ -15,4 +15,13 @@ A Python script that converts Markdown into Slack Markdown.
 - Output to file, stdout, or clipboard
 - Cross-platform clipboard support using pyperclip
 - Graceful fallback when clipboard libraries aren't available
+- Espanso integration for text expansion workflow
+
+## Espanso Integration
+
+The project includes an espanso configuration file (`md2slack.yml`) that enables quick text expansion for Markdown conversion:
+
+- `:md2slack` - Converts clipboard contents to Slack format and puts result back in clipboard
+- `:md2s` - Converts selected text to Slack format and replaces it inline
+- `:md2c` - Converts selected text to Slack format and copies to clipboard without replacing
 

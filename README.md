@@ -16,6 +16,7 @@ This tool is built on top of the [`markdown-to-mrkdwn`](https://pypi.org/project
 - **Clipboard Integration**: Seamless copy-paste workflow using pyperclip
 - **Graceful Degradation**: Falls back to file/stream operations when clipboard isn't available
 - **Error Handling**: Comprehensive error messages and validation
+- **Espanso Integration**: Built-in text expansion shortcuts for efficient workflows
 
 ## Installation
 
@@ -112,6 +113,34 @@ optional arguments:
 
 - [markdown-to-mrkdwn](https://pypi.org/project/markdown-to-mrkdwn/): Core conversion engine
 - [pyperclip](https://pypi.org/project/pyperclip/): Cross-platform clipboard operations (optional)
+- [Espanso](https://espanso.org/) (optional): For text expansion workflow integration
+
+## Espanso Integration
+
+[Espanso](https://espanso.org/) is an open-source text expander that allows you to define custom shortcuts and expand them into longer text when typed. The `md2slack.yml` configuration file included in this repo provides several helpful text expansion triggers:
+
+### Installation
+
+1. [Install Espanso](https://espanso.org/install/) for your platform
+2. Copy the `md2slack.yml` file to your Espanso match directory:
+   ```bash
+   # On macOS
+   cp md2slack.yml ~/Library/Application\ Support/espanso/match/
+   
+   # On Linux
+   cp md2slack.yml ~/.config/espanso/match/
+   
+   # On Windows
+   cp md2slack.yml %APPDATA%\espanso\match\
+   ```
+3. Update the file paths in `md2slack.yml` to match your installation location
+4. Restart Espanso for changes to take effect
+
+### Available Shortcuts
+
+- `:md2slack` - Converts clipboard contents to Slack format and puts the result back in clipboard
+- `:md2s` - Converts selected text to Slack format and replaces it inline
+- `:md2c` - Converts selected text to Slack format and copies to clipboard without replacing text
 
 ## Contributing
 
@@ -121,6 +150,7 @@ Contributions are welcome! This is a simple tool, but there's always room for im
 - Additional conversion options
 - Performance enhancements
 - Documentation improvements
+- More integration options
 
 ## License
 
