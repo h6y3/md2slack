@@ -1,68 +1,127 @@
 # md2slack
 
-A simple tool to convert standard Markdown to Slack Markdown (mrkdwn) format.
+A lightweight, command-line utility for converting standard Markdown to Slack-compatible Markdown (mrkdwn) format.
+
+## Overview
+
+`md2slack` provides a seamless way to prepare your Markdown content for Slack's specific markdown implementation, eliminating the frustration of manually adjusting formatting when copying content to Slack.
+
+This tool is built on top of the [`markdown-to-mrkdwn`](https://pypi.org/project/markdown-to-mrkdwn/) Python library, providing a convenient command-line interface with additional features like clipboard integration.
+
+## Features
+
+- **Multiple Input Methods**: Read from files, standard input (stdin), or system clipboard
+- **Flexible Output Options**: Write to files, standard output (stdout), or copy directly to clipboard
+- **Cross-Platform Support**: Works on macOS, Linux, and Windows
+- **Clipboard Integration**: Seamless copy-paste workflow using pyperclip
+- **Graceful Degradation**: Falls back to file/stream operations when clipboard isn't available
+- **Error Handling**: Comprehensive error messages and validation
 
 ## Installation
 
-1. Ensure Python 3 is installed
-2. Set up the virtual environment and install dependencies:
+### Prerequisites
+
+- Python 3.6 or higher
+- pip (Python package manager)
+
+### Setup
+
+1. Clone this repository or download the source code:
+   ```bash
+   git clone https://github.com/username/md2slack.git
+   cd md2slack
    ```
+
+2. Set up a virtual environment and install dependencies:
+   ```bash
    python3 -m venv md2slack_venv
-   source md2slack_venv/bin/activate
-   pip install markdown-to-mrkdwn pyperclip
+   source md2slack_venv/bin/activate  # On Windows: md2slack_venv\Scripts\activate
+   pip install -r requirements.txt
    ```
-3. Make sure the script is executable:
-   ```
+
+3. Make the shell script executable:
+   ```bash
    chmod +x md2slack
    ```
 
 ## Usage
 
-### Basic Usage
+### Basic Examples
 
 ```bash
-# Convert a file
-./md2slack input.md -o output.txt
+# Convert a Markdown file to a Slack-compatible text file
+./md2slack document.md -o slack_formatted.txt
 
-# Using stdin/stdout
-cat input.md | ./md2slack > output.txt
+# Pipe content through stdin/stdout
+cat document.md | ./md2slack > slack_formatted.txt
 
-# Using clipboard
-./md2slack -c -C  # Read from clipboard and copy result back to clipboard
+# Copy from clipboard, convert, and copy result back to clipboard
+./md2slack -c -C
 ```
 
-### Options
+### Command-Line Options
 
-- Input:
-  - Provide a file as an argument
-  - Pipe content via stdin
-  - Use `-c` or `--clipboard` to read from system clipboard
-- Output:
-  - Use `-o` or `--output` to specify an output file
-  - Let the result go to stdout (default)
-  - Use `-C` or `--copy` to copy result to system clipboard
+```
+usage: md2slack [-h] [-o OUTPUT] [-c] [-C] [file]
 
-## Examples
+Convert Markdown to Slack Markdown (mrkdwn)
+
+positional arguments:
+  file                  Input markdown file (optional, stdin used if not provided)
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o OUTPUT, --output OUTPUT
+                        Output file (stdout if not specified)
+  -c, --clipboard       Use clipboard for input
+  -C, --copy            Copy output to clipboard
+```
+
+### Workflow Examples
+
+#### Document Preparation Workflow
 
 ```bash
-# Convert from file to file
-./md2slack document.md -o slack_document.txt
+# Edit your document in your favorite Markdown editor
+# Then convert and copy to clipboard in one step:
+./md2slack my_document.md -C
 
-# Convert from stdin to stdout
-echo "# Hello **world**" | ./md2slack
+# Now paste directly into Slack!
+```
 
-# Convert from clipboard and copy result back to clipboard
+#### Quick Clipboard Conversion
+
+```bash
+# Copy markdown text from any source
+# Then run this command to convert and replace clipboard contents:
 ./md2slack -c -C
 
-# Convert from file and copy result to clipboard (also prints to stdout)
-./md2slack input.md -C
-
-# Convert from clipboard to file
-./md2slack -c -o output.txt
+# Paste the converted text into Slack
 ```
 
-## Requirements
+## How It Works
 
-- Python 3
-- markdown-to-mrkdwn
-- pyperclip (for clipboard support)
+`md2slack` is a thin wrapper around the [`markdown-to-mrkdwn`](https://pypi.org/project/markdown-to-mrkdwn/) Python library, which handles the conversion logic. The script provides:
+
+1. A convenient command-line interface
+2. Multiple input/output options (files, streams, clipboard)
+3. Error handling and user feedback
+4. Clipboard integration via pyperclip
+
+## Dependencies
+
+- [markdown-to-mrkdwn](https://pypi.org/project/markdown-to-mrkdwn/): Core conversion engine
+- [pyperclip](https://pypi.org/project/pyperclip/): Cross-platform clipboard operations (optional)
+
+## Contributing
+
+Contributions are welcome! This is a simple tool, but there's always room for improvement in areas like:
+
+- Better error handling
+- Additional conversion options
+- Performance enhancements
+- Documentation improvements
+
+## License
+
+[MIT License](LICENSE)
