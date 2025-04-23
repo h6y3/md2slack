@@ -17,6 +17,9 @@ build/
 # Output files
 *_slack.md
 
+# User configuration files
+md2slack.yml
+
 # Editor files
 .vscode/
 .idea/

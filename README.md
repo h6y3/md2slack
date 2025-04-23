@@ -117,23 +117,32 @@ optional arguments:
 
 ## Espanso Integration
 
-[Espanso](https://espanso.org/) is an open-source text expander that allows you to define custom shortcuts and expand them into longer text when typed. The `md2slack.yml` configuration file included in this repo provides several helpful text expansion triggers:
+[Espanso](https://espanso.org/) is an open-source text expander that allows you to define custom shortcuts and expand them into longer text when typed. The `md2slack.yml.sample` configuration file included in this repo provides several helpful text expansion triggers.
 
 ### Installation
 
 1. [Install Espanso](https://espanso.org/install/) for your platform
-2. Copy the `md2slack.yml` file to your Espanso match directory:
+2. Copy the sample configuration file to your Espanso match directory:
    ```bash
    # On macOS
-   cp md2slack.yml ~/Library/Application\ Support/espanso/match/
+   cp md2slack.yml.sample ~/Library/Application\ Support/espanso/match/md2slack.yml
    
    # On Linux
-   cp md2slack.yml ~/.config/espanso/match/
+   cp md2slack.yml.sample ~/.config/espanso/match/md2slack.yml
    
    # On Windows
-   cp md2slack.yml %APPDATA%\espanso\match\
+   cp md2slack.yml.sample %APPDATA%\espanso\match\md2slack.yml
    ```
-3. Update the file paths in `md2slack.yml` to match your installation location
+3. Edit the configuration variables at the top of the file:
+   ```yaml
+   # ====================== CONFIGURATION VARIABLES ======================
+   # Set this to the directory where md2slack is installed
+   INSTALL_DIR="/path/to/md2slack"
+   # Set this to the virtual environment activate path (if using a venv)
+   # Leave as empty string "" if installed globally
+   VENV_ACTIVATE="md2slack_venv/bin/activate"
+   # ==================================================================
+   ```
 4. Restart Espanso for changes to take effect
 
 ### Available Shortcuts
