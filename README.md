@@ -109,6 +109,20 @@ optional arguments:
 3. Error handling and user feedback
 4. Clipboard integration via pyperclip
 
+### Formatting Examples
+
+Input Markdown | Output Slack Markdown
+-------------- | --------------------
+`# Heading 1` | `*Heading 1*`
+`## Heading 2` | `*Heading 2*`
+`*italic*` | `_italic_`
+`**bold**` | `*bold*`
+```code``` | `` `code` ``
+`* Bullet with asterisk` | `* Bullet with asterisk`
+`- Bullet with dash` | `• Bullet with dash` (Unicode bullet)
+`+ Bullet with plus` | `+ Bullet with plus`
+`1. Numbered item` | `1. Numbered item`
+
 ## Dependencies
 
 - [markdown-to-mrkdwn](https://pypi.org/project/markdown-to-mrkdwn/): Core conversion engine
@@ -148,8 +162,8 @@ optional arguments:
 ### Available Shortcuts
 
 - `:md2slack` - Converts clipboard contents to Slack format and puts the result back in clipboard
-- `:md2s` - Converts selected text to Slack format and replaces it inline
-- `:md2c` - Converts selected text to Slack format and copies to clipboard without replacing text
+- `:mdinsert` - Opens a form to enter text, converts it to Slack format and inserts it
+- `:mdcopy` - Opens a form to enter text, converts it to Slack format and copies to clipboard without replacing
 
 ## Contributing
 
