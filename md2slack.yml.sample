@@ -1,0 +1,53 @@
+# Save this as ~/Library/Application Support/espanso/match/md2slack.yml
+# IMPORTANT: Configure the following variables before using
+
+# ====================== CONFIGURATION VARIABLES ======================
+# Set this to the directory where md2slack is installed
+INSTALL_DIR="/path/to/md2slack"
+# Set this to the virtual environment activate path (if using a venv)
+# Leave as empty string "" if installed globally
+VENV_ACTIVATE="md2slack_venv/bin/activate"
+# ==================================================================
+
+# Configuration for md2slack script integration
+matches:
+  # Quick clipboard conversion - read from clipboard and write back to clipboard
+  - trigger: ":md2slack"
+    replace: "{{output}}"
+    vars:
+      - name: output
+        type: shell
+        params:
+          cmd: "cd $INSTALL_DIR && ${VENV_ACTIVATE:+source $VENV_ACTIVATE &&} python md2slack.py -c -C && echo 'Markdown converted to Slack format (in clipboard)'"
+          
+  # Convert text and replace it with Slack-formatted version (insert)
+  - trigger: ":mdinsert"
+    form: true
+    replace: "{{output}}"
+    vars:
+      - name: form_text
+        type: form
+        params:
+          layout: |
+            Enter text to convert:
+            [[text]]
+      - name: output
+        type: shell
+        params:
+          cmd: "cd $INSTALL_DIR && ${VENV_ACTIVATE:+source $VENV_ACTIVATE &&} echo '{{form_text.text}}' | python md2slack.py"
+          
+  # Convert text and copy to clipboard (but don't replace text)
+  - trigger: ":mdcopy"
+    form: true
+    replace: "{{form_text.text}}"
+    vars:
+      - name: form_text
+        type: form
+        params:
+          layout: |
+            Enter text to convert:
+            [[text]]
+      - name: clipboard_copy
+        type: shell
+        params:
+          cmd: "cd $INSTALL_DIR && ${VENV_ACTIVATE:+source $VENV_ACTIVATE &&} echo '{{form_text.text}}' | python md2slack.py -C && echo 'Converted to clipboard'"
