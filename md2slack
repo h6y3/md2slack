@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Get the directory where this script is located
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PYTHON_SCRIPT="$SCRIPT_DIR/md2slack.py"
+VENV_DIR="$SCRIPT_DIR/md2slack_venv"
+VENV_PYTHON="$VENV_DIR/bin/python"
+
+# Check if Python script exists
+if [ ! -f "$PYTHON_SCRIPT" ]; then
+    echo "Error: Python script not found at $PYTHON_SCRIPT" >&2
+    exit 1
+fi
+
+# Check if virtual environment exists
+if [ ! -d "$VENV_DIR" ]; then
+    echo "Error: Virtual environment not found at $VENV_DIR" >&2
+    echo "Please run: python3 -m venv md2slack_venv && source md2slack_venv/bin/activate && pip install markdown-to-mrkdwn" >&2
+    exit 1
+fi
+
+# Use the Python from the virtual environment
+"$VENV_PYTHON" "$PYTHON_SCRIPT" "$@"
