@@ -108,6 +108,13 @@ optional arguments:
 2. Multiple input/output options (files, streams, clipboard)
 3. Error handling and user feedback
 4. Clipboard integration via pyperclip
+5. Custom fixes for Slack markdown rendering issues
+
+### Custom Fixes
+
+This tool implements fixes for known issues in the underlying markdown-to-mrkdwn library:
+
+- **Trailing Spaces in Bold Text**: Fixes rendering issues where trailing spaces in bold text (e.g., `**Bold  **` or headings with trailing spaces) cause Slack to not render formatting correctly. The tool automatically trims these spaces to ensure proper rendering.
 
 ### Formatting Examples
 
