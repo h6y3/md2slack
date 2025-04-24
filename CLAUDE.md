@@ -28,6 +28,7 @@ flake8
 - Outputs to file, stdout, or clipboard
 - Handles clipboard with pyperclip
 - Includes graceful fallbacks
+- Fixes Slack rendering issues with trailing spaces in bold text
 
 ## Espanso Shortcuts
 
