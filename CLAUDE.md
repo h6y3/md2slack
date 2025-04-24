@@ -30,6 +30,39 @@ flake8
 - Includes graceful fallbacks
 - Fixes Slack rendering issues with trailing spaces in bold text
 
+## Code Structure
+
+- Main conversion logic in `process_input()` function
+- Custom fixes registered using SlackMarkdownConverter plugins
+- Multiple regex plugins can be registered for different transformations
+
+## SlackMarkdownConverter API
+
+```python
+# Register a regex-based plugin
+converter.register_regex_plugin(
+    name="plugin_name",
+    pattern=r"regex_pattern",
+    replacement=r"replacement",
+    priority=10  # Lower numbers run first
+)
+
+# Register a custom plugin for complex processing
+converter.register_plugin(
+    name="plugin_name",
+    converter_func=custom_function,  # Takes string, returns string
+    priority=50,
+    scope="global"  # Options: "global", "line", "block"
+)
+```
+
+## Virtual Environment
+
+- Python dependencies in `md2slack_venv/`
+- Key dependencies:
+  - markdown_to_mrkdwn: `/md2slack_venv/lib/python3.13/site-packages/markdown_to_mrkdwn/`
+  - pyperclip: For clipboard support
+
 ## Espanso Shortcuts
 
 - `:md2slack` - Clipboard→Slack→Clipboard
