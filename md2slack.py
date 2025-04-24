@@ -14,6 +14,16 @@ except ImportError:
 def process_input(input_str):
     """Convert markdown to mrkdwn format"""
     converter = SlackMarkdownConverter()
+    
+    # Register custom plugin to fix trailing spaces in bold text
+    # This runs after the standard conversion with high priority (lower number)
+    converter.register_regex_plugin(
+        name="fix_bold_spaces", 
+        pattern=r"\*([^*\n]+?)[ ]+\*", 
+        replacement=r"*\1*", 
+        priority=10
+    )
+    
     return converter.convert(input_str)
 
 def main():
