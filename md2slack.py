@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-import os
 import argparse
 from markdown_to_mrkdwn import SlackMarkdownConverter
 
@@ -11,32 +10,54 @@ try:
 except ImportError:
     CLIPBOARD_SUPPORTED = False
 
+
+def register_fix_bold_trailing_spaces(converter):
+    """
+    Register a custom plugin to fix trailing spaces in bold text.
+    Slack doesn't render bold text correctly when there are trailing spaces
+    before the closing asterisk, i.e. "*text *" should be "*text*".
+    """
+    converter.register_regex_plugin(
+        name="fix_bold_spaces",
+        pattern=r"\*([^*\n]+?)[ ]+\*",
+        replacement=r"*\1*",
+        priority=10
+    )
+
+
 def process_input(input_str):
     """Convert markdown to mrkdwn format"""
     converter = SlackMarkdownConverter()
-    
-    # Register custom plugin to fix trailing spaces in bold text
-    # This runs after the standard conversion with high priority (lower number)
-    converter.register_regex_plugin(
-        name="fix_bold_spaces", 
-        pattern=r"\*([^*\n]+?)[ ]+\*", 
-        replacement=r"*\1*", 
-        priority=10
-    )
-    
+    # Register all custom fix plugins
+    register_fix_bold_trailing_spaces(converter)
     return converter.convert(input_str)
 
+
 def main():
-    parser = argparse.ArgumentParser(description='Convert Markdown to Slack Markdown (mrkdwn)')
-    parser.add_argument('file', nargs='?', help='Input markdown file (optional, stdin used if not provided)')
-    parser.add_argument('-o', '--output', help='Output file (stdout if not specified)')
-    
+    parser = argparse.ArgumentParser(
+        description='Convert Markdown to Slack Markdown (mrkdwn)'
+    )
+    parser.add_argument(
+        'file', nargs='?',
+        help='Input markdown file (optional, stdin used if not provided)'
+    )
+    parser.add_argument(
+        '-o', '--output',
+        help='Output file (stdout if not specified)'
+    )
+
     if CLIPBOARD_SUPPORTED:
-        parser.add_argument('-c', '--clipboard', action='store_true', help='Use clipboard for input')
-        parser.add_argument('-C', '--copy', action='store_true', help='Copy output to clipboard')
-    
+        parser.add_argument(
+            '-c', '--clipboard', action='store_true',
+            help='Use clipboard for input'
+        )
+        parser.add_argument(
+            '-C', '--copy', action='store_true',
+            help='Copy output to clipboard'
+        )
+
     args = parser.parse_args()
-    
+
     # Handle input
     if CLIPBOARD_SUPPORTED and args.clipboard:
         try:
@@ -57,14 +78,16 @@ def main():
     else:
         # Check if stdin has data
         if sys.stdin.isatty():
-            sys.stderr.write("No input file specified and no stdin input detected.\n")
+            sys.stderr.write(
+                "No input file specified and no stdin input detected.\n"
+            )
             parser.print_help()
             sys.exit(1)
         input_text = sys.stdin.read()
-    
+
     # Process the markdown
     output_text = process_input(input_text)
-    
+
     # Handle output
     if CLIPBOARD_SUPPORTED and args.copy:
         try:
@@ -73,7 +96,7 @@ def main():
         except Exception as e:
             sys.stderr.write(f"Error copying to clipboard: {e}\n")
             sys.exit(1)
-    
+
     if args.output:
         try:
             with open(args.output, 'w') as f:
@@ -84,6 +107,7 @@ def main():
     elif not (CLIPBOARD_SUPPORTED and args.copy and not args.output):
         # Only write to stdout if we're not only copying to clipboard
         sys.stdout.write(output_text)
+
 
 if __name__ == "__main__":
     main()
