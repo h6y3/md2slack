@@ -1,2 +1,2 @@
-markdown-to-mrkdwn>=1.0.0
+markdown-to-mrkdwn>=0.2.0
 pyperclip>=1.8.0
