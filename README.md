@@ -29,7 +29,7 @@ This tool is built on top of the [`markdown-to-mrkdwn`](https://pypi.org/project
 
 1. Clone this repository or download the source code:
    ```bash
-   git clone https://github.com/username/md2slack.git
+   git clone https://github.com/hyuan/md2slack.git
    cd md2slack
    ```
 
@@ -58,6 +58,12 @@ cat document.md | ./md2slack > slack_formatted.txt
 
 # Copy from clipboard, convert, and copy result back to clipboard
 ./md2slack -c -C
+
+# Run tests
+pytest
+
+# Run linting
+flake8
 ```
 
 ### Command-Line Options
@@ -168,9 +174,9 @@ Input Markdown | Output Slack Markdown
 
 ### Available Shortcuts
 
-- `:md2slack` - Converts clipboard contents to Slack format and puts the result back in clipboard
-- `:mdinsert` - Opens a form to enter text, converts it to Slack format and inserts it
-- `:mdcopy` - Opens a form to enter text, converts it to Slack format and copies to clipboard without replacing
+- `:md2slack` - Clipboard→Slack→Clipboard
+- `:md2s` - Selection→Slack (inline replace)
+- `:md2c` - Selection→Slack→Clipboard
 
 ## Contributing
 
@@ -181,6 +187,8 @@ Contributions are welcome! This is a simple tool, but there's always room for im
 - Performance enhancements
 - Documentation improvements
 - More integration options
+
+Please ensure all code passes linting with `flake8` and tests with `pytest` before submitting a pull request.
 
 ## License
 
