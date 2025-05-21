@@ -10,40 +10,37 @@ This tool is built on top of the [`markdown-to-mrkdwn`](https://pypi.org/project
 
 ## Features
 
-- **Multiple Input Methods**: Read from files, standard input (stdin), or system clipboard
-- **Flexible Output Options**: Write to files, standard output (stdout), or copy directly to clipboard
-- **Cross-Platform Support**: Works on macOS, Linux, and Windows
-- **Clipboard Integration**: Seamless copy-paste workflow using pyperclip
-- **Graceful Degradation**: Falls back to file/stream operations when clipboard isn't available
-- **Error Handling**: Comprehensive error messages and validation
-- **Espanso Integration**: Built-in text expansion shortcuts for efficient workflows
+- **Multiple Input Methods**: Read from files, standard input (stdin), or system clipboard.
+- **Flexible Output Options**: Write to files, standard output (stdout), or copy directly to clipboard.
+- **Cross-Platform Support**: Works on macOS, Linux, and Windows.
+- **Clipboard Integration**: Seamless copy-paste workflow (requires `pyperclip`).
+- **Espanso Integration**: Sample configuration for text expansion shortcuts.
+- **Customizable Fixes**: Includes fixes for common Slack markdown rendering issues, such as trailing spaces in bold text and removing Perplexity.ai style citations.
 
 ## Installation
 
-### Prerequisites
+You can install `md2slack` using pip:
 
-- Python 3.6 or higher
-- pip (Python package manager)
+```bash
+pip install md2slack
+```
 
-### Setup
+This will install the command-line tool `md2slack` and its dependencies.
 
-1. Clone this repository or download the source code:
-   ```bash
-   git clone https://github.com/hyuan/md2slack.git
-   cd md2slack
-   ```
+### For Development / From Source
 
-2. Set up a virtual environment and install dependencies:
-   ```bash
-   python3 -m venv md2slack_venv
-   source md2slack_venv/bin/activate  # On Windows: md2slack_venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
+If you want to contribute to development or install from the source code:
 
-3. Make the shell script executable:
-   ```bash
-   chmod +x md2slack
-   ```
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/user/md2slack # Replace with the actual repository URL
+    cd md2slack
+    ```
+
+2.  Install in editable mode (preferably in a virtual environment):
+    ```bash
+    pip install -e .
+    ```
 
 ## Usage
 
@@ -51,22 +48,18 @@ This tool is built on top of the [`markdown-to-mrkdwn`](https://pypi.org/project
 
 ```bash
 # Convert a Markdown file to a Slack-compatible text file
-./md2slack document.md -o slack_formatted.txt
+md2slack document.md -o slack_formatted.txt
 
 # Pipe content through stdin/stdout
-cat document.md | ./md2slack > slack_formatted.txt
+cat document.md | md2slack > slack_formatted.txt
 
 # Copy from clipboard, convert, and copy result back to clipboard
-./md2slack -c -C
-
-# Run tests
-pytest
-
-# Run linting
-flake8
+md2slack -c -C
 ```
 
 ### Command-Line Options
+
+The command-line options remain the same. You can view them with `md2slack --help`:
 
 ```
 usage: md2slack [-h] [-o OUTPUT] [-c] [-C] [file]
@@ -80,8 +73,8 @@ optional arguments:
   -h, --help            show this help message and exit
   -o OUTPUT, --output OUTPUT
                         Output file (stdout if not specified)
-  -c, --clipboard       Use clipboard for input
-  -C, --copy            Copy output to clipboard
+  -c, --clipboard       Use clipboard for input (requires pyperclip)
+  -C, --copy            Copy output to clipboard (requires pyperclip)
 ```
 
 ### Workflow Examples
@@ -91,7 +84,7 @@ optional arguments:
 ```bash
 # Edit your document in your favorite Markdown editor
 # Then convert and copy to clipboard in one step:
-./md2slack my_document.md -C
+md2slack my_document.md -C
 
 # Now paste directly into Slack!
 ```
@@ -101,26 +94,21 @@ optional arguments:
 ```bash
 # Copy markdown text from any source
 # Then run this command to convert and replace clipboard contents:
-./md2slack -c -C
+md2slack -c -C
 
 # Paste the converted text into Slack
 ```
 
 ## How It Works
 
-`md2slack` is a thin wrapper around the [`markdown-to-mrkdwn`](https://pypi.org/project/markdown-to-mrkdwn/) Python library, which handles the conversion logic. The script provides:
+`md2slack` utilizes the [`markdown-to-mrkdwn`](https://pypi.org/project/markdown-to-mrkdwn/) Python library for the core conversion logic. It enhances this by:
 
-1. A convenient command-line interface
-2. Multiple input/output options (files, streams, clipboard)
-3. Error handling and user feedback
-4. Clipboard integration via pyperclip
-5. Custom fixes for Slack markdown rendering issues
-
-### Custom Fixes
-
-This tool implements fixes for known issues in the underlying markdown-to-mrkdwn library:
-
-- **Trailing Spaces in Bold Text**: Fixes rendering issues where trailing spaces in bold text (e.g., `**Bold  **` or headings with trailing spaces) cause Slack to not render formatting correctly. The tool automatically trims these spaces to ensure proper rendering.
+1.  Providing a user-friendly command-line interface.
+2.  Offering flexible input/output options (files, stdin/stdout, clipboard).
+3.  Integrating `pyperclip` for clipboard access.
+4.  Implementing custom regular expression-based fixes for common Slack formatting issues, such as:
+    *   **Trailing Spaces in Bold Text**: Ensures `*text *` becomes `*text*`.
+    *   **Perplexity Citation Removal**: Strips `[1][2]` style citations and footer sections commonly found in AI-generated text.
 
 ### Formatting Examples
 
@@ -130,7 +118,7 @@ Input Markdown | Output Slack Markdown
 `## Heading 2` | `*Heading 2*`
 `*italic*` | `_italic_`
 `**bold**` | `*bold*`
-```code``` | `` `code` ``
+`` `code` `` | `` `code` ``
 `* Bullet with asterisk` | `* Bullet with asterisk`
 `- Bullet with dash` | `• Bullet with dash` (Unicode bullet)
 `+ Bullet with plus` | `+ Bullet with plus`
@@ -138,57 +126,55 @@ Input Markdown | Output Slack Markdown
 
 ## Dependencies
 
-- [markdown-to-mrkdwn](https://pypi.org/project/markdown-to-mrkdwn/): Core conversion engine
-- [pyperclip](https://pypi.org/project/pyperclip/): Cross-platform clipboard operations (optional)
-- [Espanso](https://espanso.org/) (optional): For text expansion workflow integration
+`md2slack` relies on the following Python packages:
+
+- [markdown-to-mrkdwn](https://pypi.org/project/markdown-to-mrkdwn/): For the core Markdown to Slack mrkdwn conversion.
+- [pyperclip](https://pypi.org/project/pyperclip/): For clipboard input/output functionality.
+
+These will be installed automatically when you install `md2slack` via pip.
 
 ## Espanso Integration
 
-[Espanso](https://espanso.org/) is an open-source text expander that allows you to define custom shortcuts and expand them into longer text when typed. The `md2slack.yml.sample` configuration file included in this repo provides several helpful text expansion triggers.
+[Espanso](https://espanso.org/) is an open-source text expander. You can use the provided `md2slack.yml.sample` for quick conversions.
 
-### Installation
+### Setup
 
-1. [Install Espanso](https://espanso.org/install/) for your platform
-2. Copy the sample configuration file to your Espanso match directory:
-   ```bash
-   # On macOS
-   cp md2slack.yml.sample ~/Library/Application\ Support/espanso/match/md2slack.yml
-   
-   # On Linux
-   cp md2slack.yml.sample ~/.config/espanso/match/md2slack.yml
-   
-   # On Windows
-   cp md2slack.yml.sample %APPDATA%\espanso\match\md2slack.yml
-   ```
-3. Edit the configuration variables at the top of the file:
-   ```yaml
-   # ====================== CONFIGURATION VARIABLES ======================
-   # Set this to the directory where md2slack is installed
-   INSTALL_DIR="/path/to/md2slack"
-   # Set this to the virtual environment activate path (if using a venv)
-   # Leave as empty string "" if installed globally
-   VENV_ACTIVATE="md2slack_venv/bin/activate"
-   # ==================================================================
-   ```
-4. Restart Espanso for changes to take effect
+1.  [Install Espanso](https://espanso.org/install/) for your platform.
+2.  Copy the `md2slack.yml.sample` file to your Espanso match directory:
+    *   **macOS**: `~/Library/Application Support/espanso/match/md2slack.yml`
+    *   **Linux**: `~/.config/espanso/match/md2slack.yml`
+    *   **Windows**: `%APPDATA%\espanso\match\md2slack.yml`
 
-### Available Shortcuts
+    You can copy it from the cloned repository or download it directly from GitHub.
 
-- `:md2slack` - Clipboard→Slack→Clipboard
-- `:md2s` - Selection→Slack (inline replace)
-- `:md2c` - Selection→Slack→Clipboard
+3.  **Configuration**:
+    *   If you installed `md2slack` using `pip` and the `md2slack` command is in your system's PATH, the sample configuration should work out of the box. The `INSTALL_DIR` and `VENV_ACTIVATE` variables are no longer present in the sample file.
+    *   If `md2slack` is not in your PATH (e.g., you installed it in a specific virtual environment that isn't globally accessible via the `md2slack` command), you'll need to modify the `cmd` lines in `md2slack.yml` to use the full path to the `md2slack` executable. For example:
+        ```yaml
+        # Example of a modified cmd for a specific venv path
+        # cmd: "/path/to/your/venv/bin/md2slack -c -C && echo 'Markdown converted'"
+        ```
+4.  Restart Espanso for the changes to take effect.
+
+### Available Shortcuts (from sample)
+
+-   `:md2slack`: Reads from clipboard, converts, and copies back to clipboard.
+-   `:mdinsert`: Opens a form to input text, converts, and inserts the result.
+-   `:mdcopy`: Opens a form to input text, converts, and copies the result to the clipboard.
 
 ## Contributing
 
-Contributions are welcome! This is a simple tool, but there's always room for improvement in areas like:
+Contributions are welcome! If you have ideas for improvements, please open an issue or submit a pull request. Key areas for contribution include:
 
-- Better error handling
-- Additional conversion options
-- Performance enhancements
-- Documentation improvements
-- More integration options
+-   Enhanced error handling
+-   Additional conversion rules or options
+-   Performance improvements
+-   Broader test coverage
+-   Documentation updates
 
-Please ensure all code passes linting with `flake8` and tests with `pytest` before submitting a pull request.
+When contributing code, please ensure it aligns with the project's style and that any new functionality is appropriately tested. (Note: Specific linting/testing commands like `flake8` or `pytest` would depend on project setup if development dependencies are added, e.g., in a `dev-requirements.txt` or `pyproject.toml [dev-dependencies]`).
+
+## License
 
 ## License
 

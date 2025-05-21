@@ -1,15 +1,19 @@
-# Python virtual environment
-md2slack_venv/
+# Virtual environments
+md2slack_venv/ # Project specific venv name
+.venv/
+venv/
+ENV/
+env/
 
-# Python bytecode
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Distribution / packaging
-dist/
+# Python build artifacts
 build/
+dist/
 *.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py[cod] # General bytecode/optimized code
 
 # Environment variables
 .env
